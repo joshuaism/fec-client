@@ -1,0 +1,34 @@
+<div *ngIf="contributions && contributions.length > 0">
+  <p>Total Amount: {{getSum() | currency: 'USD'}}</p>
+  <p>Total Contributions: {{contributions.length}}</p>
+  <p>Total Unique Contributors: {{uniqueContributors.length}}</p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 18%;" (click)="sort('fullName')">NAME</th>
+        <th style="width: 16%;" (click)="sort('location')">LOCATION</th>
+        <th style="width: 14%" (click)="sort('occupation')">OCCUPATION</th>
+        <th style="width: 15%" (click)="sort('employer')">EMPLOYER</th>
+        <th style="width: 21%" (click)="sort('committee')">COMMITTEE</th>
+        <th style="width: 8%; text-align: right;" (click)="sort('date')">DATE</th>
+        <th style="width: 8%; text-align: right;" (click)="sort('amount')">AMOUNT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of uniqueContributors">
+        <td><a href="https://www.fec.gov/data/receipts/individual-contributions/?contributor_name={{c.fullName}}&contributor_occupation={{c.occupation}}&contributor_state={{c.state}}&contributor_city={{c.city}}&per_page=100">{{c.fullName}}</a></td>
+        <td>{{c.city}}, {{c.state}}</td>
+        <td>{{c.occupation}}</td>
+        <td>{{c.employer}}</td>
+        <td>
+          <span title="{{getCommitteeId(c)}}">{{getCommitteeName(c)}}</span>&nbsp;
+          <span *ngIf="c.earmark != null"><img class="icon" src="../assets/icons/ear.png" title="earmark" alt="earmark">&nbsp;&nbsp;</span>
+          <a title="FEC Committee Page" href="https://www.fec.gov/data/committee/{{getCommitteeId(c)}}/"><img class="icon" src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
+          <a title="Open Secrets Committee Page" href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(c)}}"><img class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
+        </td>
+        <td style="text-align: right;">{{c.date | date:'mediumDate'}}</td>
+        <td style="text-align: right;">{{c.amount | currency: 'USD'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

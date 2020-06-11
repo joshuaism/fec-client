@@ -1,0 +1,26 @@
+.party {
+	border-radius: .25rem;
+	border: 1px;
+	padding: 1.25rem;
+	margin: 1rem;
+}
+
+.republican {
+	background-color: #f8d7da;
+}
+
+.democratic {
+	background-color: #cce5ff;
+}
+
+.libertarian {
+	background-color: #fff3cd;
+}
+
+.green {
+	background-color: #d4edda;
+}
+
+.other {
+	background-color: #e2e3e5;
+}
