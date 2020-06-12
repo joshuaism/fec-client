@@ -18,6 +18,7 @@ export class AppComponent {
   partyMap: Map<string, Map<string, Contribution[]>>;
   committeeIdMap: Map<string, string>;
   committeeTypeMap: Map<string, boolean>;
+  state: string;
 
   constructor(private fecService: FecService) {
     this.partyMap = new Map();
@@ -37,7 +38,7 @@ export class AppComponent {
     this.data = new Array<Contribution>();
     this.partyMap = new Map();
     this.loading = true;
-    this.fecService.makeRequest(this.employers, this.occupations, this.getCommitteeTypes()).subscribe(response => {
+    this.fecService.makeRequest(this.employers, this.occupations, this.getCommitteeTypes(), this.state).subscribe(response => {
       <any>response['results'].map(item => {
         this.data.push(new Contribution(item));
         let party = item.committee.party;
@@ -62,6 +63,10 @@ export class AppComponent {
     });
   }
 
+  setState(state: string) {
+    this.state = state;
+  }
+
   getCommitteeTypes(): string[] {
     let committeeTypes = [];
     this.committeeTypeMap.forEach( (val, key) => {
@@ -73,7 +78,6 @@ export class AppComponent {
         }
       }
     })
-    console.log(committeeTypes);
     return committeeTypes;
   }
 

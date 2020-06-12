@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { ContributionTableComponent } from './contribution-table/contribution-table.component';
 import { MultiTextComponent } from './multi-text/multi-text.component';
+import { UsStatesComponent } from './us-states/us-states.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContributionTableComponent,
-    MultiTextComponent
+    MultiTextComponent,
+    UsStatesComponent
   ],
   imports: [
     BrowserModule,

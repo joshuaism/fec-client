@@ -6,6 +6,7 @@
   <input type="checkbox" id="{{checkbox.key}}" [ngModel]="committeeTypeMap.get(checkbox.key)"  (ngModelChange)="committeeTypeMap.set(checkbox.key, $event)">
   <label for={{checkbox.key}}>{{checkbox.key}}</label>
 </div>
+<app-us-states (state)="setState($event)"></app-us-states>
 
 <input type="submit" (click)="submit()">
 <p *ngIf="loading">loading...</p>
