@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Contribution } from 'src/app/models/contribution';
-import { Committee } from '../models/committee';
 
 @Component({
   selector: 'app-contribution-table',

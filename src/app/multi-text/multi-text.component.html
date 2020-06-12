@@ -1,0 +1,6 @@
+<div *ngFor="let element of elements; index as i; trackBy:customTrackBy">
+    <label style="min-width: 6em;">{{label}} <span *ngIf="i > 0">#{{i+1}}</span></label>
+    <input type="text" [(ngModel)]="elements[i]">
+    <button *ngIf="i == elements.length - 1 && canAddElement(); else elseBlock" type="button" (click)="addElement()"><img style="width: 20px; height: 30px;" src="../assets/icons/plus.svg"></button>
+    <ng-template #elseBlock><button (click)="removeElement(i)"><img style="width: 20px; height: 30px;" src="../assets/icons/minus.svg"></button></ng-template>
+</div>

@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { ContributionTableComponent } from './contribution-table/contribution-table.component';
+import { MultiTextComponent } from './multi-text/multi-text.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContributionTableComponent
+    ContributionTableComponent,
+    MultiTextComponent
   ],
   imports: [
     BrowserModule,

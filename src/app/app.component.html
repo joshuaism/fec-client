@@ -1,14 +1,12 @@
-<div *ngFor="let employer of employers; index as i; trackBy:customTrackBy">
-  <label style="min-width: 6em;">Employer <span *ngIf="i > 0">#{{i+1}}</span></label>
-  <input type="text" [(ngModel)]="employers[i]">
-  <input *ngIf="i == employers.length - 1" type="button" (click)="addEmployer()">
+
+<app-multi-text label="employer" max="10" [elements]="employers"></app-multi-text>
+<app-multi-text label="ocupation" max="10" [elements]="occupations"></app-multi-text>
+
+<div *ngFor="let checkbox of committeeTypeMap | keyvalue: originalOrder">
+  <input type="checkbox" id="{{checkbox.key}}" [ngModel]="committeeTypeMap.get(checkbox.key)"  (ngModelChange)="committeeTypeMap.set(checkbox.key, $event)">
+  <label for={{checkbox.key}}>{{checkbox.key}}</label>
 </div>
 
-<div *ngFor="let occupation of occupations; index as i; trackBy:customTrackBy">
-  <label style="min-width: 6.5em;">occupation <span *ngIf="i > 0">#{{i+1}}</span></label>
-  <input type="text" [(ngModel)]="occupations[i]">
-  <input *ngIf="i == occupations.length - 1" type="button" (click)="addOccupation()">
-</div>
 <input type="submit" (click)="submit()">
 <p *ngIf="loading">loading...</p>
 <p *ngIf="!loading && data && data.length <= 0">No results</p>

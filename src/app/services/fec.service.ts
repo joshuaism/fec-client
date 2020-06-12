@@ -11,11 +11,12 @@ export class FecService {
 
    }
 
-  makeRequest(employers: string[], occupations: string[]) {
+  makeRequest(employers: string[], occupations: string[], committeetypes: string[]) {
 
     let params = "?cycle=2020";
     employers.map(s => { if (s.length > 0) params = params + "&employer=" + s });
     occupations.map(s => { if (s.length > 0) params = params + "&occupation=" + s });
+    committeetypes.map(s => { if  (s.length > 0) params = params + "&committeetype=" + s });
     return this.http.get("http://localhost:8080/scheduleA/" + params);
   }
 

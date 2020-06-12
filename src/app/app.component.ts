@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FecService } from './services/fec.service';
 import { Contribution } from './models/contribution';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -16,33 +17,27 @@ export class AppComponent {
   data: Contribution[];
   partyMap: Map<string, Map<string, Contribution[]>>;
   committeeIdMap: Map<string, string>;
+  committeeTypeMap: Map<string, boolean>;
 
   constructor(private fecService: FecService) {
     this.partyMap = new Map();
     this.committeeIdMap = new Map();
+    this.committeeTypeMap = new Map();
+    this.committeeTypeMap.set("President", false);
+    this.committeeTypeMap.set("Senate", false);
+    this.committeeTypeMap.set("House", false);
+    this.committeeTypeMap.set("Other", false);
   }
 
-  addEmployer() {
-    if (this.employers[this.employers.length - 1].length > 0) {
-      this.employers.push("");
-    }
-  }
-
-  addOccupation() {
-    if (this.occupations[this.occupations.length - 1].length > 0) {
-      this.occupations.push("");
-    }
-  }
-
-  customTrackBy(index: number, obj: any) {
-    return index;
+  originalOrder = (a: KeyValue<string,boolean>, b: KeyValue<string,boolean>): number => {
+    return 0;
   }
 
   submit() {
     this.data = new Array<Contribution>();
     this.partyMap = new Map();
     this.loading = true;
-    this.fecService.makeRequest(this.employers, this.occupations).subscribe(response => {
+    this.fecService.makeRequest(this.employers, this.occupations, this.getCommitteeTypes()).subscribe(response => {
       <any>response['results'].map(item => {
         this.data.push(new Contribution(item));
         let party = item.committee.party;
@@ -67,8 +62,22 @@ export class AppComponent {
     });
   }
 
+  getCommitteeTypes(): string[] {
+    let committeeTypes = [];
+    this.committeeTypeMap.forEach( (val, key) => {
+      if (val) {
+        if (key == "Other") {
+          committeeTypes.push(..."CDEINOQUVWXYZ".split(''))
+        } else {
+          committeeTypes.push(key.substring(0, 1));
+        }
+      }
+    })
+    console.log(committeeTypes);
+    return committeeTypes;
+  }
+
   getCommitteeId(key: string) {
-    console.log(this.committeeIdMap.get(key));
     return this.committeeIdMap.get(key);
   }
 
