@@ -17,6 +17,7 @@ export class ContributionTableComponent implements OnInit {
   ngOnInit(): void {
     this.groupByUniqueContributor(this.contributions);
     this.uniqueContributors = Array.from(this.uniqueContributorsMap.values());
+    this.sort('amount');
   }
 
   sort(property: string) {
