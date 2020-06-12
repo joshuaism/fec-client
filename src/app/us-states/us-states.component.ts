@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-us-states',
@@ -6,16 +6,17 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./us-states.component.css']
 })
 export class UsStatesComponent implements OnInit {
-  
-  @Output() state = new EventEmitter<string>();
+
+  @Input() state: string;
+  @Output() selection = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  select(state: string) {
-    this.state.emit(state);
+  select(selection: string) {
+    this.selection.emit(selection);
   }
 
 }

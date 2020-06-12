@@ -1,5 +1,5 @@
 <label for="state">State</label>
-<select id="state" (change)="select($event.target.value)">
+<select [ngModel]="state" (change)="select($event.target.value)">
     <option selected value></option>
     <option value="AL">AL</option>
     <option value="AK">AK</option>

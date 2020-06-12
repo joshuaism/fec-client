@@ -23,15 +23,28 @@ export class AppComponent {
   constructor(private fecService: FecService) {
     this.partyMap = new Map();
     this.committeeIdMap = new Map();
+    this.renewCommitteeTypeMap();
+    this.retrieveLocalStorage();
+  }
+
+  originalOrder = (a: KeyValue<string,boolean>, b: KeyValue<string,boolean>): number => {
+    return 0;
+  }
+
+  clearForm() {
+    this.employers = [""];
+    this.occupations = [""];
+    this.renewCommitteeTypeMap();
+    this.state = "";
+    localStorage.clear();
+  }
+
+  renewCommitteeTypeMap() {
     this.committeeTypeMap = new Map();
     this.committeeTypeMap.set("President", false);
     this.committeeTypeMap.set("Senate", false);
     this.committeeTypeMap.set("House", false);
     this.committeeTypeMap.set("Other", false);
-  }
-
-  originalOrder = (a: KeyValue<string,boolean>, b: KeyValue<string,boolean>): number => {
-    return 0;
   }
 
   submit() {
@@ -59,8 +72,30 @@ export class AppComponent {
           this.partyMap.set(party, committeeMap);
         }
       });
+      this.setLocalStorage();
       this.loading = false;
     });
+  }
+
+  setLocalStorage() {
+    localStorage.setItem("employers", JSON.stringify(this.employers));
+    localStorage.setItem("occupations", JSON.stringify(this.occupations));
+    let committeetypes = { val:[...this.committeeTypeMap]};
+    localStorage.setItem("committeetypes", JSON.stringify(committeetypes));
+    localStorage.setItem("state", this.state);
+  }
+
+  retrieveLocalStorage() {
+    if (localStorage.getItem("employers")) {
+      this.employers = JSON.parse(localStorage.getItem("employers"));
+    }
+    if (localStorage.getItem("occupations")) {
+      this.occupations = JSON.parse(localStorage.getItem("occupations"));
+    }
+    if (localStorage.getItem("committeetypes")) {
+      this.committeeTypeMap = new Map(JSON.parse(localStorage.getItem("committeetypes")).val);
+    }
+    this.state = localStorage.getItem("state");
   }
 
   setState(state: string) {

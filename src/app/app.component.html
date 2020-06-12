@@ -1,4 +1,5 @@
 
+<button (click)="clearForm()">Clear Form</button>
 <app-multi-text label="employer" max="10" [elements]="employers"></app-multi-text>
 <app-multi-text label="ocupation" max="10" [elements]="occupations"></app-multi-text>
 
@@ -6,9 +7,9 @@
   <input type="checkbox" id="{{checkbox.key}}" [ngModel]="committeeTypeMap.get(checkbox.key)"  (ngModelChange)="committeeTypeMap.set(checkbox.key, $event)">
   <label for={{checkbox.key}}>{{checkbox.key}}</label>
 </div>
-<app-us-states (state)="setState($event)"></app-us-states>
+<app-us-states [state]="state" (selection)="setState($event)"></app-us-states>
 
-<input type="submit" (click)="submit()">
+<button (click)="submit()">Submit</button>
 <p *ngIf="loading">loading...</p>
 <p *ngIf="!loading && data && data.length <= 0">No results</p>
 <div [class]="getParty(partyMapEntity.key)" *ngFor="let partyMapEntity of partyMap | keyvalue">
