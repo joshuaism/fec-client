@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FecService } from './services/fec.service';
 import { Contribution } from './models/contribution';
 import { KeyValue } from '@angular/common';
+import { Pagination } from './models/pagination';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
   partyMap: Map<string, Map<string, Contribution[]>>;
   committeeIdMap: Map<string, string>;
   committeeTypeMap: Map<string, boolean>;
-  state: string;
+  state: string = "";
+  pagination: Pagination;
 
   constructor(private fecService: FecService) {
     this.partyMap = new Map();
@@ -52,6 +54,7 @@ export class AppComponent {
     this.partyMap = new Map();
     this.loading = true;
     this.fecService.makeRequest(this.employers, this.occupations, this.getCommitteeTypes(), this.state).subscribe(response => {
+      this.pagination = new Pagination(response['pagination']);
       <any>response['results'].map(item => {
         this.data.push(new Contribution(item));
         let party = item.committee.party;
