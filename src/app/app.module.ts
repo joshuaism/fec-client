@@ -4,22 +4,26 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
+import { ChartsModule } from 'ng2-charts';
 import { ContributionTableComponent } from './contribution-table/contribution-table.component';
 import { MultiTextComponent } from './multi-text/multi-text.component';
 import { UsStatesComponent } from './us-states/us-states.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContributionTableComponent,
     MultiTextComponent,
-    UsStatesComponent
+    UsStatesComponent,
+    BarChartComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

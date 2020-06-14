@@ -3,6 +3,7 @@ import { FecService } from './services/fec.service';
 import { Contribution } from './models/contribution';
 import { KeyValue } from '@angular/common';
 import { Pagination } from './models/pagination';
+import { ChartData } from './models/ChartData';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent {
   committeeTypeMap: Map<string, boolean>;
   state: string = "";
   pagination: Pagination;
+  chartData: ChartData;
 
   constructor(private fecService: FecService) {
     this.partyMap = new Map();
@@ -75,9 +77,27 @@ export class AppComponent {
           this.partyMap.set(party, committeeMap);
         }
       });
+      this.setChartData();
       this.setLocalStorage();
       this.loading = false;
     });
+  }
+
+  setChartData() {
+    if (this.data.length <= 0) {
+      return;
+    }
+    let chartData = new ChartData();
+    chartData.label = "$";
+    this.partyMap.forEach( (contributionMap, party) => {
+      contributionMap.forEach((contributions, committeeName)=> {
+        let sum = contributions.reduce( (sum, contribution) => sum + contribution.amount, 0);
+        chartData.barLabels.push(committeeName);
+        chartData.data.push(Number(sum.toFixed(2)));
+        chartData.colors.push(this.getColor(party));
+      });
+    });
+    this.chartData = chartData;
   }
 
   setLocalStorage() {
@@ -127,19 +147,19 @@ export class AppComponent {
     return this.partyMap.get(party).get(committee);
   }
 
-  getParty(party: String) {
+  getColor(party: String) {
     if (party.indexOf("DEMOCRATIC") > -1) {
-      return "democratic party";
+      return "#cce5ff";
     }
     if (party.indexOf("REPUBLICAN") > -1) {
-      return "republican party";
+      return "#f8d7da";
     }
     if (party.indexOf("LIBERTARIAN") > -1) {
-      return "libertarian party";
+      return "#fff3cd";
     }
     if (party.indexOf("GREEN") > -1) {
-      return "green party";
+      return "#d4edda";
     }
-    return "other party";
+    return "#e2e3e5";
   }
 }

@@ -1,0 +1,13 @@
+<div>
+    <div style="display: block; border: solid 1px; margin: 1rem;">
+      <h3 style="text-align: center;">{{label}}</h3>
+      <canvas baseChart [height]="getHeight()"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"     
+        >
+      </canvas>
+    </div>
+  </div>

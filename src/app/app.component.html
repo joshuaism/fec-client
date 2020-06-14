@@ -14,7 +14,8 @@
 <p *ngIf="!loading && data && data.length <= 0">No results</p>
 <div class="alert alert-danger" role="alert" *ngIf="!loading && pagination && pagination.count > 2000">Limit Exceeded! Search returned {{pagination.count}} contributions. Processed only first 2000 results.</div>
 <div class="alert alert-info" role="alert" *ngIf="!loading && pagination && pagination.count <= 2000">Processed {{pagination.count}} contributions.</div>
-<div [class]="getParty(partyMapEntity.key)" *ngFor="let partyMapEntity of partyMap | keyvalue">
+<app-bar-chart *ngIf="!loading && chartData" label="Total Contributions in Dollars" [chartData]="chartData"></app-bar-chart>
+<div class="party" [style.background-color]="getColor(partyMapEntity.key)" *ngFor="let partyMapEntity of partyMap | keyvalue">
   <h3>{{partyMapEntity.key}}</h3><br/>
   <div *ngFor="let committeeMapEntity of partyMap.get(partyMapEntity.key) | keyvalue">
     <p>Committee: {{committeeMapEntity.key}}&nbsp;&nbsp;
