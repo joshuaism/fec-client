@@ -71,9 +71,7 @@ export class ContributionTableComponent implements OnInit {
   }
 
   getSum() {
-    let sum = 0;
-    this.contributions.map(c => sum += c.amount);
-    return sum;
+    return this.contributions.reduce( (sum, c) => sum + c.amount, 0);
   }
 
   groupByUniqueContributor(array: Contribution[]) {

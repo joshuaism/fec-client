@@ -19,7 +19,7 @@ export class Contribution {
         this.city = obj && obj.city || null;
         this.state = obj && obj.state || null;
         this.committee = obj && new Committee(obj.committee) || null;
-        this.amount = obj && obj.amount || null;
+        this.amount = obj && obj.amount || 0;
         this.date = obj && obj.date || null;
         this.earmark = obj && obj.earmark || null;
     }
