@@ -15,18 +15,27 @@ export class AppComponent {
 
   employers = [""];
   occupations = [""];
+  electionYears = [];
+  fromYear: string;
+  toYear: string;
   loading = false;
   data: Contribution[];
-  partyMap: Map<string, Map<string, Contribution[]>>;
+  cycleMap: Map<string, Map<string, Map<string, Contribution[]>>>;
   committeeIdMap: Map<string, string>;
   committeeTypeMap: Map<string, boolean>;
   state: string = "";
   pagination: Pagination;
-  chartData: ChartData;
+  chartMap: Map<string, ChartData>;
 
   constructor(private fecService: FecService) {
-    this.partyMap = new Map();
+    this.cycleMap = new Map();
     this.committeeIdMap = new Map();
+    for(let i = 1980; i <= 2020; i += 2) {
+      this.electionYears.push(i);
+    }
+    this.fromYear = "2020";
+    this.toYear = "2020";
+    console.log(this.electionYears);
     this.renewCommitteeTypeMap();
     this.retrieveLocalStorage();
   }
@@ -39,6 +48,8 @@ export class AppComponent {
     this.employers = [""];
     this.occupations = [""];
     this.renewCommitteeTypeMap();
+    this.fromYear = "2020";
+    this.toYear = "2020";
     this.state = "";
     localStorage.clear();
   }
@@ -53,29 +64,41 @@ export class AppComponent {
 
   submit() {
     this.data = new Array<Contribution>();
-    this.partyMap = new Map();
+    this.cycleMap = new Map();
     this.loading = true;
-    this.fecService.makeRequest(this.employers, this.occupations, this.getCommitteeTypes(), this.state).subscribe(response => {
+    this.fecService.makeRequest(Number(this.fromYear), Number(this.toYear), this.employers, this.occupations, this.getCommitteeTypes(), this.state).subscribe(response => {
       this.pagination = new Pagination(response['pagination']);
       <any>response['results'].map(item => {
         this.data.push(new Contribution(item));
+        let cycle = item.committee.cycle;
         let party = item.committee.party;
         let committee = item.committee.name;
-        let committeeMap = this.partyMap.get(party);
-        if (committeeMap) {
-          let contributions = committeeMap.get(committee);
-          if (contributions) {
-            contributions.push(new Contribution(item));
+        let partyMap = this.cycleMap.get(cycle);
+        if (partyMap) {
+          let committeeMap = partyMap.get(party);
+          if (committeeMap) {
+            let contributions = committeeMap.get(committee);
+            if (contributions) {
+              contributions.push(new Contribution(item));
+            } else {
+              committeeMap.set(committee, [new Contribution(item)]);
+              this.committeeIdMap.set(committee, item.committee.id);
+            }
           } else {
+            committeeMap = new Map();
             committeeMap.set(committee, [new Contribution(item)]);
             this.committeeIdMap.set(committee, item.committee.id);
+            partyMap.set(party, committeeMap);
           }
         } else {
-          committeeMap = new Map();
+          partyMap = new Map();
+          let committeeMap = new Map();
           committeeMap.set(committee, [new Contribution(item)]);
           this.committeeIdMap.set(committee, item.committee.id);
-          this.partyMap.set(party, committeeMap);
+          partyMap.set(party, committeeMap);
+          this.cycleMap.set(cycle, partyMap);
         }
+        
       });
       this.setChartData();
       this.setLocalStorage();
@@ -87,17 +110,20 @@ export class AppComponent {
     if (this.data.length <= 0) {
       return;
     }
-    let chartData = new ChartData();
-    chartData.label = "$";
-    this.partyMap.forEach( (contributionMap, party) => {
-      contributionMap.forEach((contributions, committeeName)=> {
-        let sum = contributions.reduce( (sum, contribution) => sum + contribution.amount, 0);
-        chartData.barLabels.push(committeeName);
-        chartData.data.push(Number(sum.toFixed(2)));
-        chartData.colors.push(this.getColor(party));
+    this.chartMap = new Map();
+    this.cycleMap.forEach( (partyMap,cycle) => {
+      let chartData = new ChartData();
+      chartData.label = "$";
+      partyMap.forEach( (contributionMap, party) => {
+        contributionMap.forEach((contributions, committeeName)=> {
+          let sum = contributions.reduce( (sum, contribution) => sum + contribution.amount, 0);
+          chartData.barLabels.push(committeeName);
+          chartData.data.push(sum);
+          chartData.colors.push(this.getColor(party));
+        });
       });
-    });
-    this.chartData = chartData;
+      this.chartMap.set(cycle, chartData);
+    })
   }
 
   setLocalStorage() {
@@ -105,6 +131,8 @@ export class AppComponent {
     localStorage.setItem("occupations", JSON.stringify(this.occupations));
     let committeetypes = { val:[...this.committeeTypeMap]};
     localStorage.setItem("committeetypes", JSON.stringify(committeetypes));
+    localStorage.setItem("fromYear", this.fromYear);
+    localStorage.setItem("toYear", this.toYear);
     localStorage.setItem("state", this.state);
   }
 
@@ -118,7 +146,15 @@ export class AppComponent {
     if (localStorage.getItem("committeetypes")) {
       this.committeeTypeMap = new Map(JSON.parse(localStorage.getItem("committeetypes")).val);
     }
-    this.state = localStorage.getItem("state");
+    if (localStorage.getItem("fromYear")) {
+      this.fromYear = localStorage.getItem("fromYear");
+    }
+    if (localStorage.getItem("toYear")) {
+      this.toYear = localStorage.getItem("toYear");
+    }
+    if (localStorage.getItem("state")) {
+      this.state = localStorage.getItem("state");
+    }
   }
 
   setState(state: string) {
@@ -139,12 +175,23 @@ export class AppComponent {
     return committeeTypes;
   }
 
+  onFromElectionYearsChange() {
+    if (this.fromYear > this.toYear) {
+      console.log("reset");
+      this.toYear = this.fromYear;
+    }
+  }
+
+  toElectionYears() {
+    return this.electionYears.slice(this.electionYears.findIndex((val, i) => this.fromYear == val));
+  }
+
   getCommitteeId(key: string) {
     return this.committeeIdMap.get(key);
   }
 
-  getContributions(party: string, committee: string): Contribution[] {
-    return this.partyMap.get(party).get(committee);
+  getContributions(cycle: string, party: string, committee: string): Contribution[] {
+    return this.cycleMap.get(cycle).get(party).get(committee);
   }
 
   getColor(party: String) {
