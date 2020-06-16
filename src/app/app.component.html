@@ -2,8 +2,10 @@
   <div class="row">
     <div class="col-5">
       <span><b>Contributor Information</b></span>
+      <app-multi-text label="Name" max="10" [elements]="names"></app-multi-text>
       <app-multi-text label="Employer" max="10" [elements]="employers"></app-multi-text>
       <app-multi-text label="Occupation" max="10" [elements]="occupations"></app-multi-text>
+      <app-multi-text label="City" max="10" [elements]="cities"></app-multi-text>
       <app-us-states [state]="state" (selection)="setState($event)"></app-us-states>
     </div>
     <div class="col">

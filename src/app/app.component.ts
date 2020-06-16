@@ -13,17 +13,21 @@ import { ChartData } from './models/ChartData';
 export class AppComponent {
   title = 'fec';
 
+  names = [""];
   employers = [""];
   occupations = [""];
+  cities = [""];
+  state: string = "";
   electionYears = [];
   fromYear: string;
   toYear: string;
+
+
   loading = false;
   data: Contribution[];
   cycleMap: Map<string, Map<string, Map<string, Contribution[]>>>;
   committeeIdMap: Map<string, string>;
   committeeTypeMap: Map<string, boolean>;
-  state: string = "";
   pagination: Pagination;
   chartMap: Map<string, ChartData>;
 
@@ -35,7 +39,6 @@ export class AppComponent {
     }
     this.fromYear = "2020";
     this.toYear = "2020";
-    console.log(this.electionYears);
     this.renewCommitteeTypeMap();
     this.retrieveLocalStorage();
   }
@@ -45,12 +48,14 @@ export class AppComponent {
   }
 
   clearForm() {
+    this.names = [""];
     this.employers = [""];
     this.occupations = [""];
+    this.cities = [""];
+    this.state = "";
     this.renewCommitteeTypeMap();
     this.fromYear = "2020";
     this.toYear = "2020";
-    this.state = "";
     localStorage.clear();
   }
 
@@ -66,7 +71,8 @@ export class AppComponent {
     this.data = new Array<Contribution>();
     this.cycleMap = new Map();
     this.loading = true;
-    this.fecService.makeRequest(Number(this.fromYear), Number(this.toYear), this.employers, this.occupations, this.getCommitteeTypes(), this.state).subscribe(response => {
+    this.fecService.makeRequest(Number(this.fromYear), Number(this.toYear), this.names, this.employers, 
+    this.occupations, this.getCommitteeTypes(), this.cities, this.state).subscribe(response => {
       this.pagination = new Pagination(response['pagination']);
       <any>response['results'].map(item => {
         this.data.push(new Contribution(item));
@@ -127,21 +133,32 @@ export class AppComponent {
   }
 
   setLocalStorage() {
+    localStorage.setItem("names", JSON.stringify(this.names));
     localStorage.setItem("employers", JSON.stringify(this.employers));
     localStorage.setItem("occupations", JSON.stringify(this.occupations));
+    localStorage.setItem("cities", JSON.stringify(this.cities));
+    localStorage.setItem("state", this.state);
     let committeetypes = { val:[...this.committeeTypeMap]};
     localStorage.setItem("committeetypes", JSON.stringify(committeetypes));
     localStorage.setItem("fromYear", this.fromYear);
     localStorage.setItem("toYear", this.toYear);
-    localStorage.setItem("state", this.state);
   }
 
   retrieveLocalStorage() {
+    if (localStorage.getItem("names")) {
+      this.names = JSON.parse(localStorage.getItem("names"));
+    }
     if (localStorage.getItem("employers")) {
       this.employers = JSON.parse(localStorage.getItem("employers"));
     }
     if (localStorage.getItem("occupations")) {
       this.occupations = JSON.parse(localStorage.getItem("occupations"));
+    }
+    if (localStorage.getItem("cities")) {
+      this.cities = JSON.parse(localStorage.getItem("cities"));
+    }
+    if (localStorage.getItem("state")) {
+      this.state = localStorage.getItem("state");
     }
     if (localStorage.getItem("committeetypes")) {
       this.committeeTypeMap = new Map(JSON.parse(localStorage.getItem("committeetypes")).val);
@@ -151,9 +168,6 @@ export class AppComponent {
     }
     if (localStorage.getItem("toYear")) {
       this.toYear = localStorage.getItem("toYear");
-    }
-    if (localStorage.getItem("state")) {
-      this.state = localStorage.getItem("state");
     }
   }
 
