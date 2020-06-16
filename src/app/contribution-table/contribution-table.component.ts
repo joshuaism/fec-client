@@ -9,6 +9,7 @@ import { Contribution } from 'src/app/models/contribution';
 export class ContributionTableComponent implements OnInit {
 
   @Input() contributions: Contribution[];
+  @Input() cycle: string;
   uniqueContributorsMap: Map<string, Contribution>;
   uniqueContributors: Contribution[];
 

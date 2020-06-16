@@ -23,8 +23,8 @@
         <td>
           <span title="{{getCommitteeId(c)}}">{{getCommitteeName(c)}}</span>&nbsp;
           <span *ngIf="c.earmark != null"><img class="icon" src="../assets/icons/ear.png" title="earmark" alt="earmark">&nbsp;&nbsp;</span>
-          <a title="FEC Committee Page" href="https://www.fec.gov/data/committee/{{getCommitteeId(c)}}/"><img class="icon" src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
-          <a title="Open Secrets Committee Page" href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(c)}}"><img class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
+          <a title="FEC Committee Page" href="https://www.fec.gov/data/committee/{{getCommitteeId(c)}}/?cycle={{cycle}}"><img class="icon" src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
+          <a title="Open Secrets Committee Page" href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(c)}}&cycle={{cycle}}"><img class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
         </td>
         <td style="text-align: right;">{{c.date | date:'mediumDate'}}</td>
         <td style="text-align: right;">{{c.amount | currency: 'USD'}}</td>

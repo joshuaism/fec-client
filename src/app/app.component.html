@@ -56,13 +56,13 @@
     <div *ngFor="let committeeMapEntity of cycleMap.get(cycleMapEntity.key).get(partyMapEntity.key) | keyvalue">
       <p>Committee: {{committeeMapEntity.key}}&nbsp;&nbsp;
         <a title="FEC Committee Page"
-          href="https://www.fec.gov/data/committee/{{getCommitteeId(committeeMapEntity.key)}}/"><img class="icon"
+          href="https://www.fec.gov/data/committee/{{getCommitteeId(committeeMapEntity.key)}}/?cycle={{cycleMapEntity.key}}"><img class="icon"
             src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
         <a title="Open Secrets Committee Page"
-          href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(committeeMapEntity.key)}}"><img
+          href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(committeeMapEntity.key)}}&cycle={{cycleMapEntity.key}}"><img
             class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
       </p>
-      <app-contribution-table
+      <app-contribution-table [cycle]="cycleMapEntity.key"
         [contributions]="getContributions(cycleMapEntity.key, partyMapEntity.key, committeeMapEntity.key)">
       </app-contribution-table>
     </div>
