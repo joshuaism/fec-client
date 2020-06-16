@@ -16,15 +16,15 @@
     </thead>
     <tbody>
       <tr *ngFor="let c of uniqueContributors">
-        <td><a href="https://www.fec.gov/data/receipts/individual-contributions/?contributor_name={{c.fullName}}&contributor_occupation={{c.occupation}}&contributor_state={{c.state}}&contributor_city={{c.city}}&per_page=100">{{c.fullName}}</a></td>
+        <td><a target="_blank" href="https://www.fec.gov/data/receipts/individual-contributions/?contributor_name={{c.fullName}}&contributor_occupation={{c.occupation}}&contributor_state={{c.state}}&contributor_city={{c.city}}&per_page=100">{{c.fullName}}</a></td>
         <td>{{c.city}}, {{c.state}}</td>
         <td>{{c.occupation}}</td>
         <td>{{c.employer}}</td>
         <td>
           <span title="{{getCommitteeId(c)}}">{{getCommitteeName(c)}}</span>&nbsp;
           <span *ngIf="c.earmark != null"><img class="icon" src="../assets/icons/ear.png" title="earmark" alt="earmark">&nbsp;&nbsp;</span>
-          <a title="FEC Committee Page" href="https://www.fec.gov/data/committee/{{getCommitteeId(c)}}/?cycle={{cycle}}"><img class="icon" src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
-          <a title="Open Secrets Committee Page" href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(c)}}&cycle={{cycle}}"><img class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
+          <a target="_blank" title="FEC Committee Page" href="https://www.fec.gov/data/committee/{{getCommitteeId(c)}}/?cycle={{cycle}}"><img class="icon" src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
+          <a target="_blank" title="Open Secrets Committee Page" href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(c)}}&cycle={{cycle}}"><img class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
         </td>
         <td style="text-align: right;">{{c.date | date:'mediumDate'}}</td>
         <td style="text-align: right;">{{c.amount | currency: 'USD'}}</td>
