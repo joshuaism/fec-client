@@ -21,7 +21,7 @@ export class FecService {
     cities.map(s => { if (s.length > 0) params = params + "&city=" + s });
     if (state && state.length > 0) params = params + "&state=" + state;
     committeetypes.map(s => { if  (s.length > 0) params = params + "&committeetype=" + s });
-    return this.http.get("http://localhost:8080/scheduleA/" + params);
+    return this.http.get("http://marsrover.hopto.org/FecSearchApi-0.0.1/scheduleA/" + params);
   }
 
 
