@@ -57,10 +57,10 @@
       <p>Committee: {{committeeMapEntity.key}}&nbsp;&nbsp;
         <a title="FEC Committee Page" target="_blank"
           href="https://www.fec.gov/data/committee/{{getCommitteeId(committeeMapEntity.key)}}/?cycle={{cycleMapEntity.key}}"><img class="icon"
-            src="../assets/icons/fec.png"></a>&nbsp;&nbsp;
+            src="./assets/icons/fec.png"></a>&nbsp;&nbsp;
         <a title="Open Secrets Committee Page" target="_blank"
           href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(committeeMapEntity.key)}}&cycle={{cycleMapEntity.key}}"><img
-            class="icon" src="../assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
+            class="icon" src="./assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
       </p>
       <app-contribution-table [cycle]="cycleMapEntity.key"
         [contributions]="getContributions(cycleMapEntity.key, partyMapEntity.key, committeeMapEntity.key)">
