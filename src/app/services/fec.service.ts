@@ -15,10 +15,10 @@ export class FecService {
     for(let i = fromYear + 2; i <= toYear; i += 2) {
       params = params + "&cycle=" + i;
     }
-    names.map(s => { if (s.length > 0) params = params + "&name=" + s });
-    employers.map(s => { if (s.length > 0) params = params + "&employer=" + s });
-    occupations.map(s => { if (s.length > 0) params = params + "&occupation=" + s });
-    cities.map(s => { if (s.length > 0) params = params + "&city=" + s });
+    names.map(s => { if (s.length > 0) params = params + "&name=" + encodeURIComponent(s) });
+    employers.map(s => { if (s.length > 0) params = params + "&employer=" + encodeURIComponent(s) });
+    occupations.map(s => { if (s.length > 0) params = params + "&occupation=" + encodeURIComponent(s) });
+    cities.map(s => { if (s.length > 0) params = params + "&city=" + encodeURIComponent(s) });
     if (state && state.length > 0) params = params + "&state=" + state;
     committeetypes.map(s => { if  (s.length > 0) params = params + "&committeetype=" + s });
     return this.http.get("https://fecrestapi.herokuapp.com/scheduleA/" + params);
