@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FecService } from './services/fec.service';
 import { Contribution } from './models/contribution';
 import { KeyValue } from '@angular/common';
+import { finalize } from 'rxjs/operators'
 import { Pagination } from './models/pagination';
 import { ChartData } from './models/ChartData';
 
@@ -72,7 +73,9 @@ export class AppComponent {
     this.cycleMap = new Map();
     this.loading = true;
     this.fecService.makeRequest(Number(this.fromYear), Number(this.toYear), this.names, this.employers, 
-    this.occupations, this.getCommitteeTypes(), this.cities, this.state).subscribe(response => {
+    this.occupations, this.getCommitteeTypes(), this.cities, this.state)
+    .pipe(finalize(() => { this.loading = false;}))
+    .subscribe(response => {
       this.pagination = new Pagination(response['pagination']);
       <any>response['results'].map(item => {
         this.data.push(new Contribution(item));

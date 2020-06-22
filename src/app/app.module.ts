@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
@@ -9,6 +9,7 @@ import { ContributionTableComponent } from './contribution-table/contribution-ta
 import { MultiTextComponent } from './multi-text/multi-text.component';
 import { UsStatesComponent } from './us-states/us-states.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { ErrorIntercept } from './services/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,13 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
     AppRoutingModule,
     ChartsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorIntercept,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
