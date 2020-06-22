@@ -11,15 +11,16 @@ export class BarChartComponent implements OnInit {
 
   constructor() { }
 
+  @Input() cycle: string;
   @Input() label: string;
   @Input() chartData: ChartData;
 
   public barChartOptions = {
     responsive: true, maintainAspectRatio: false,
+    onClick:  (evt, item) => {if (item.length > 0) location.href = "#" + this.cycle + item[0]._model.label;},
     tooltips: {callbacks: { label: function(item) {return formatCurrency(item.value, 'en', '$', 'USD')}}},
     scales: { yAxes: [{ticks: {autoSkip: false}, gridLines: { display: false }}], xAxes: [{type: 'logarithmic', ticks: {min: 0, callback: function(tick) {return tick.toLocaleString()}} }]}
   };
-
   public barChartLabels = [];
   public barChartType = 'horizontalBar';
   public barChartLegend = false; 
