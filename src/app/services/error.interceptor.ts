@@ -6,7 +6,7 @@ import {
     HttpInterceptor
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { timeout, catchError, retry } from 'rxjs/operators';
 
 export class ErrorIntercept implements HttpInterceptor {
     intercept(
@@ -16,6 +16,7 @@ export class ErrorIntercept implements HttpInterceptor {
         return next.handle(request)
             .pipe(
                 //retry(1),
+                timeout(30000),
                 catchError((error: HttpErrorResponse) => {
                     let errorMessage = '';
                     if (error.error instanceof ErrorEvent) {
@@ -24,6 +25,11 @@ export class ErrorIntercept implements HttpInterceptor {
                     } else {
                         // server-side error
                         errorMessage = `Error Status: ${error.status}\nMessage: ${error.message}`;
+                        if (error.message == "Timeout has occurred") {
+                            errorMessage = `Server response has timed out.\n\nTry your search again after a few\nminutes or further filter your results\nby using additional search fields`;
+                        }
+                        
+                        
                     }
                     window.alert(errorMessage);
                     return throwError(errorMessage);
