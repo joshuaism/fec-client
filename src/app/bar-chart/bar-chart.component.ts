@@ -17,7 +17,15 @@ export class BarChartComponent implements OnInit {
 
   public barChartOptions = {
     responsive: true, maintainAspectRatio: false,
-    onClick:  (evt, item) => {if (item.length > 0) location.href = "#" + this.cycle + item[0]._model.label;},
+    onClick:  (evt, item) => {
+      if (item.length > 0) {
+        let label = item[0]._model.label;
+        if (label instanceof Array) {
+          label = label.join('').trim();
+        }
+       location.href = "#" + this.cycle + label
+      }
+    },
     tooltips: {callbacks: { label: function(item) {return formatCurrency(item.value, 'en', '$', 'USD')}}},
     scales: { yAxes: [{ticks: {autoSkip: false}, gridLines: { display: false }}], xAxes: [{type: 'logarithmic', ticks: {min: 0, callback: function(tick) {return tick.toLocaleString()}} }]}
   };
