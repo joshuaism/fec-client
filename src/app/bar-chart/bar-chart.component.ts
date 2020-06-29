@@ -27,7 +27,7 @@ export class BarChartComponent implements OnInit {
       }
     },
     tooltips: {callbacks: { label: function(item) {return formatCurrency(item.value, 'en', '$', 'USD')}}},
-    scales: { yAxes: [{ticks: {autoSkip: false}, gridLines: { display: false }}], xAxes: [{type: 'logarithmic', ticks: {min: 0, callback: function(tick) {return tick.toLocaleString()}} }]}
+    scales: { yAxes: [{ticks: {autoSkip: false}, gridLines: { display: false }}], xAxes: [{type: 'linear', ticks: {min: 0, callback: function(tick) {return tick.toLocaleString()}} }]}
   };
   public barChartLabels = [];
   public barChartType = 'horizontalBar';
@@ -42,6 +42,7 @@ export class BarChartComponent implements OnInit {
     this.barChartData[0].data = this.chartData.data;
     this.barChartData[0].label = this.chartData.label;
     this.barChartData[0].backgroundColor = this.chartData.colors;
+    this.barChartOptions.scales.xAxes = this.setAxes();
   }
 
   wordWrap(strings: string[]): any[] {
@@ -68,7 +69,30 @@ export class BarChartComponent implements OnInit {
   }
 
   getHeight() {
+    if (this.chartData.data.length <= 5) {
+      return 100;
+    }
+    if (this.chartData.data.length <= 10) {
+      return 200;
+    }
     return 23 * this.chartData.data.length + 100;
+  }
+
+  setAxes() {
+    return [{type: this.getAxesType(), ticks: {min: 0, callback: function(tick) {return tick.toLocaleString()}} }];
+  }
+
+  getAxesType(): string {
+    let min = Number.POSITIVE_INFINITY;
+    let max = Number.NEGATIVE_INFINITY;
+    this.chartData.data.map(val => {
+      if (val > max) max = val;
+      if (val < min) min = val;
+    })
+    if (max - min < 10000) {
+      return 'linear';
+    }
+    return 'logarithmic';
   }
 
 }
