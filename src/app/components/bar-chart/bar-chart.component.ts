@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartData } from '../../models/ChartData';
 import { formatCurrency } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bar-chart',
@@ -9,7 +10,7 @@ import { formatCurrency } from '@angular/common';
 })
 export class BarChartComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   @Input() cycle: string;
   @Input() label: string;
@@ -23,7 +24,7 @@ export class BarChartComponent implements OnInit {
         if (label instanceof Array) {
           label = label.join('').trim();
         }
-       location.href = "#" + this.cycle + label
+       this.router.navigate(['/results'], { queryParamsHandling: "preserve", fragment: this.cycle + label });
       }
     },
     tooltips: {callbacks: { label: function(item) {return formatCurrency(item.value, 'en', '$', 'USD')}}},

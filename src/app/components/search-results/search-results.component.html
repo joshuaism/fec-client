@@ -1,0 +1,35 @@
+<p *ngIf="loading">loading...</p>
+<p *ngIf="!loading && data && data.length <= 0">No results</p>
+<div class="alert alert-danger" role="alert" *ngIf="!loading && pagination && pagination.count > 2000">Limit Exceeded!
+  Search returned {{pagination.count}} contributions. Processed only first 2000 results.</div>
+<div class="alert alert-info" role="alert" *ngIf="!loading && pagination && pagination.count <= 2000">Processed
+  {{pagination.count}} contributions.</div>
+<a [attr.id]="top" name="top"></a>
+<div style="text-align: center;">
+  <a *ngFor="let cycleMapEntity of cycleMap | keyvalue" queryParamsHandling="preserve" [routerLink]='' [fragment]="cycleMapEntity.key">[{{cycleMapEntity.key}}]</a>
+</div>
+<div *ngFor="let cycleMapEntity of cycleMap | keyvalue">
+  <a [attr.id]="cycleMapEntity.key" name="{{cycleMapEntity.key}}"></a>
+  <div class="anchor"><a queryParamsHandling="preserve" [routerLink]='' [fragment]="top">[Top]</a></div>
+  <h3>{{cycleMapEntity.key}} Election Cycle</h3>
+  <app-bar-chart cycle="{{cycleMapEntity.key}}" label="Total Contributions in Dollars" [chartData]="chartMap.get(cycleMapEntity.key)"></app-bar-chart>
+  <div class="party" [style.background-color]="getColor(partyMapEntity.key)"
+    *ngFor="let partyMapEntity of cycleMap.get(cycleMapEntity.key) | keyvalue">
+    <h3>{{partyMapEntity.key}}</h3><br />
+    <div *ngFor="let committeeMapEntity of cycleMap.get(cycleMapEntity.key).get(partyMapEntity.key) | keyvalue">
+      <a [attr.id]="cycleMapEntity.key + committeeMapEntity.key"></a>
+      <div class="anchor"><a queryParamsHandling="preserve" [routerLink]='' [fragment]="cycleMapEntity.key">[{{cycleMapEntity.key}} Chart]</a></div>
+      <p>Committee: {{committeeMapEntity.key}}&nbsp;&nbsp;
+        <a title="FEC Committee Page" target="_blank"
+          href="https://www.fec.gov/data/committee/{{getCommitteeId(committeeMapEntity.key)}}/?cycle={{cycleMapEntity.key}}"><img class="icon"
+            src="./assets/icons/fec.png"></a>&nbsp;&nbsp;
+        <a title="Open Secrets Committee Page" target="_blank"
+          href="https://www.opensecrets.org/pacs/lookup2.php?strID={{getCommitteeId(committeeMapEntity.key)}}&cycle={{cycleMapEntity.key}}"><img
+            class="icon" src="./assets/icons/opensecrets.ico"></a>&nbsp;&nbsp;
+      </p>
+      <app-contribution-table [cycle]="cycleMapEntity.key"
+        [contributions]="getContributions(cycleMapEntity.key, partyMapEntity.key, committeeMapEntity.key)">
+      </app-contribution-table>
+    </div>
+  </div>
+</div>

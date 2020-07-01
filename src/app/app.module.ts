@@ -10,6 +10,7 @@ import { MultiTextComponent } from './components/multi-text/multi-text.component
 import { UsStatesComponent } from './components/us-states/us-states.component';
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { ErrorIntercept } from './services/error.interceptor';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ErrorIntercept } from './services/error.interceptor';
     ContributionTableComponent,
     MultiTextComponent,
     UsStatesComponent,
-    BarChartComponent
+    BarChartComponent,
+    SearchResultsComponent
   ],
   imports: [
     BrowserModule,

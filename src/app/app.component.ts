@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
-import { FecService } from './services/fec.service';
-import { Contribution } from './models/contribution';
 import { KeyValue } from '@angular/common';
-import { finalize } from 'rxjs/operators'
-import { Pagination } from './models/pagination';
-import { ChartData } from './models/ChartData';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -22,19 +18,9 @@ export class AppComponent {
   electionYears = [];
   fromYear: string;
   toYear: string;
-
-
-  loading = false;
-  data: Contribution[];
-  cycleMap: Map<string, Map<string, Map<string, Contribution[]>>>;
-  committeeIdMap: Map<string, string>;
   committeeTypeMap: Map<string, boolean>;
-  pagination: Pagination;
-  chartMap: Map<string, ChartData>;
 
-  constructor(private fecService: FecService) {
-    this.cycleMap = new Map();
-    this.committeeIdMap = new Map();
+  constructor(private router: Router) {
     for(let i = 1980; i <= 2020; i += 2) {
       this.electionYears.push(i);
     }
@@ -44,6 +30,7 @@ export class AppComponent {
     this.retrieveLocalStorage();
   }
 
+  // preserve committee type checkbox order
   originalOrder = (a: KeyValue<string,boolean>, b: KeyValue<string,boolean>): number => {
     return 0;
   }
@@ -69,70 +56,45 @@ export class AppComponent {
   }
 
   submit() {
-    this.data = new Array<Contribution>();
-    this.cycleMap = new Map();
-    this.loading = true;
-    this.fecService.makeRequest(Number(this.fromYear), Number(this.toYear), this.names, this.employers, 
-    this.occupations, this.getCommitteeTypes(), this.cities, this.state)
-    .pipe(finalize(() => { this.loading = false;}))
-    .subscribe(response => {
-      this.pagination = new Pagination(response['pagination']);
-      <any>response['results'].map(item => {
-        this.data.push(new Contribution(item));
-        let cycle = item.committee.cycle;
-        let party = item.committee.party;
-        let committee = item.committee.name;
-        let partyMap = this.cycleMap.get(cycle);
-        if (partyMap) {
-          let committeeMap = partyMap.get(party);
-          if (committeeMap) {
-            let contributions = committeeMap.get(committee);
-            if (contributions) {
-              contributions.push(new Contribution(item));
-            } else {
-              committeeMap.set(committee, [new Contribution(item)]);
-              this.committeeIdMap.set(committee, item.committee.id);
-            }
-          } else {
-            committeeMap = new Map();
-            committeeMap.set(committee, [new Contribution(item)]);
-            this.committeeIdMap.set(committee, item.committee.id);
-            partyMap.set(party, committeeMap);
-          }
-        } else {
-          partyMap = new Map();
-          let committeeMap = new Map();
-          committeeMap.set(committee, [new Contribution(item)]);
-          this.committeeIdMap.set(committee, item.committee.id);
-          partyMap.set(party, committeeMap);
-          this.cycleMap.set(cycle, partyMap);
-        }
-        
-      });
-      this.setChartData();
-      this.setLocalStorage();
-      this.loading = false;
-    });
+    this.setLocalStorage();
+    this.router.navigate(['results'], {queryParams: this.getParams()})
   }
 
-  setChartData() {
-    if (this.data.length <= 0) {
-      return;
+  getParams() {
+    let params = {};
+    if (this.fromYear != "1980") {
+      params['fromYear'] = this.fromYear;
     }
-    this.chartMap = new Map();
-    this.cycleMap.forEach( (partyMap,cycle) => {
-      let chartData = new ChartData();
-      chartData.label = "$";
-      partyMap.forEach( (contributionMap, party) => {
-        contributionMap.forEach((contributions, committeeName)=> {
-          let sum = contributions.reduce( (sum, contribution) => sum + contribution.amount, 0);
-          chartData.barLabels.push(committeeName);
-          chartData.data.push(sum);
-          chartData.colors.push(this.getColor(party));
-        });
-      });
-      this.chartMap.set(cycle, chartData);
-    })
+    if(this.toYear != "2020") {
+      params['toYear'] = this.toYear;
+    }
+    this.addParam(params, this.names, 'name');
+    this.addParam(params, this.employers, 'employer');
+    this.addParam(params, this.occupations, 'occupation');
+    this.addParam(params, this.cities, 'city');
+    if (this.state && this.state.length > 0) {
+      params['state'] = this.state;
+    }
+    this.committeeTypeMap.forEach((checked, type) => {
+      if(checked) {
+        if (!params['committeetype']) {
+          params['committeetype'] = [];
+        }
+        params['committeetype'].push(type);
+      }
+    });
+    return params;
+  }
+
+  addParam(params: {}, args: string[], field: string) {
+    args.map(s => { 
+      if (s.length > 0) {
+        if (!params[field]) {
+          params[field] = [];
+        }
+        params[field].push(s)
+      }
+    });
   }
 
   setLocalStorage() {
@@ -178,20 +140,6 @@ export class AppComponent {
     this.state = state;
   }
 
-  getCommitteeTypes(): string[] {
-    let committeeTypes = [];
-    this.committeeTypeMap.forEach( (val, key) => {
-      if (val) {
-        if (key == "Other") {
-          committeeTypes.push(..."CDEINOQUVWXYZ".split(''))
-        } else {
-          committeeTypes.push(key.substring(0, 1));
-        }
-      }
-    })
-    return committeeTypes;
-  }
-
   onFromElectionYearsChange() {
     if (this.fromYear > this.toYear) {
       console.log("reset");
@@ -201,29 +149,5 @@ export class AppComponent {
 
   toElectionYears() {
     return this.electionYears.slice(this.electionYears.findIndex((val, i) => this.fromYear == val));
-  }
-
-  getCommitteeId(key: string) {
-    return this.committeeIdMap.get(key);
-  }
-
-  getContributions(cycle: string, party: string, committee: string): Contribution[] {
-    return this.cycleMap.get(cycle).get(party).get(committee);
-  }
-
-  getColor(party: String) {
-    if (party.indexOf("DEMOCRATIC") > -1) {
-      return "#cce5ff";
-    }
-    if (party.indexOf("REPUBLICAN") > -1) {
-      return "#f8d7da";
-    }
-    if (party.indexOf("LIBERTARIAN") > -1) {
-      return "#fff3cd";
-    }
-    if (party.indexOf("GREEN") > -1) {
-      return "#d4edda";
-    }
-    return "#e2e3e5";
   }
 }
