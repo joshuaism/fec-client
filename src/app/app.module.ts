@@ -5,10 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { ChartsModule } from 'ng2-charts';
-import { ContributionTableComponent } from './contribution-table/contribution-table.component';
-import { MultiTextComponent } from './multi-text/multi-text.component';
-import { UsStatesComponent } from './us-states/us-states.component';
-import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { ContributionTableComponent } from './components/contribution-table/contribution-table.component';
+import { MultiTextComponent } from './components/multi-text/multi-text.component';
+import { UsStatesComponent } from './components/us-states/us-states.component';
+import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { ErrorIntercept } from './services/error.interceptor';
 
 @NgModule({
