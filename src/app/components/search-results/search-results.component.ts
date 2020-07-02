@@ -27,7 +27,7 @@ export class SearchResultsComponent implements OnInit {
   constructor(private fecService: FecService, private route: ActivatedRoute) {
     this.routeSubscription = this.route.queryParamMap.subscribe(params => {
       this.paramsChange(params);
-  });
+    });
   }
 
   ngOnInit(): void {
@@ -36,6 +36,7 @@ export class SearchResultsComponent implements OnInit {
 
   paramsChange(params) {
     this.data = new Array<Contribution>();
+    this.pagination = new Pagination();
     this.cycleMap = new Map();
     this.committeeIdMap = new Map();
     this.loading = true;
