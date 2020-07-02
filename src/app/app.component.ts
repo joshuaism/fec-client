@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -20,14 +20,33 @@ export class AppComponent {
   toYear: string;
   committeeTypeMap: Map<string, boolean>;
 
-  constructor(private router: Router) {
+  routeSubscription;
+
+  constructor(private router: Router, private route: ActivatedRoute) {
     for(let i = 1980; i <= 2020; i += 2) {
       this.electionYears.push(i);
     }
     this.fromYear = "2020";
     this.toYear = "2020";
+    this.routeSubscription = this.route.queryParamMap.subscribe(params => {
+      this.paramsChange(params);
+    });
+  }
+
+  paramsChange(params: ParamMap) {
     this.renewCommitteeTypeMap();
-    this.retrieveLocalStorage();
+    if (params.keys.length <= 0) {
+      this.retrieveLocalStorage();
+      return;
+    }
+    this.fromYear = params.get('fromYear') || "2020";
+    this.toYear = params.get('toYear') || "2020";
+    this.names = params.get('name')? params.getAll('name') : [""];
+    this.employers = params.get('employer')? params.getAll('employer') : [""];
+    this.occupations = params.get('occupation')? params.getAll('occupation') : [""];
+    params.getAll('committeetype').every(s => {this.committeeTypeMap.set(s, true)});
+    this.cities = params.get('city')? params.getAll('city') : [""];
+    this.state = params.get('state') || "";
   }
 
   // preserve committee type checkbox order
@@ -142,12 +161,15 @@ export class AppComponent {
 
   onFromElectionYearsChange() {
     if (this.fromYear > this.toYear) {
-      console.log("reset");
       this.toYear = this.fromYear;
     }
   }
 
   toElectionYears() {
     return this.electionYears.slice(this.electionYears.findIndex((val, i) => this.fromYear == val));
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 }
