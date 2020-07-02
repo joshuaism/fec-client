@@ -7,7 +7,7 @@ const routerOptions: ExtraOptions = {
 };
 
 const routes: Routes = [
-  {path: 'results', component: SearchResultsComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'}
+  {path: 'results', component: SearchResultsComponent}
 ];
 
 @NgModule({

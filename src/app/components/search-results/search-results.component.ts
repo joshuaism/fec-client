@@ -22,28 +22,36 @@ export class SearchResultsComponent implements OnInit {
   pagination: Pagination;
   chartMap: Map<string, ChartData>;
 
+  routeSubscription;
+
   constructor(private fecService: FecService, private route: ActivatedRoute) {
+    this.routeSubscription = this.route.queryParamMap.subscribe(params => {
+      this.paramsChange(params);
+  });
   }
 
   ngOnInit(): void {
+
+  }
+
+  paramsChange(params) {
     this.data = new Array<Contribution>();
     this.cycleMap = new Map();
     this.committeeIdMap = new Map();
     this.loading = true;
-    this.route.queryParamMap.subscribe(params => {
-      console.log("Params:" + params);
-      let fromYear = params.get('fromYear') || 1980;
-      let toYear = params.get('toYear') || 2020;
-      let names = params.getAll('name');
-      let employers = params.getAll('employer');
-      let occupations = params.getAll('occupation');
-      let committeeTypes = params.getAll('committeetype');
-      let cities = params.getAll('city');
-      let state = params.get('state');
 
-      this.fecService.makeRequest(Number(fromYear), Number(toYear), names, employers, 
+    let fromYear = params.get('fromYear') || 1980;
+    let toYear = params.get('toYear') || 2020;
+    let names = params.getAll('name');
+    let employers = params.getAll('employer');
+    let occupations = params.getAll('occupation');
+    let committeeTypes = params.getAll('committeetype');
+    let cities = params.getAll('city');
+    let state = params.get('state');
+
+    let request = this.fecService.makeRequest(Number(fromYear), Number(toYear), names, employers,
       occupations, this.getCommitteeTypes(committeeTypes), cities, state)
-      .pipe(finalize(() => { this.loading = false;}))
+      .pipe(finalize(() => { this.loading = false; }))
       .subscribe(response => {
         this.pagination = new Pagination(response['pagination']);
         <any>response['results'].map(item => {
@@ -76,12 +84,11 @@ export class SearchResultsComponent implements OnInit {
             partyMap.set(party, committeeMap);
             this.cycleMap.set(cycle, partyMap);
           }
-          
+
         });
         this.setChartData();
         this.loading = false;
       });
-    });
   }
 
   setChartData() {
@@ -89,12 +96,12 @@ export class SearchResultsComponent implements OnInit {
       return;
     }
     this.chartMap = new Map();
-    this.cycleMap.forEach( (partyMap,cycle) => {
+    this.cycleMap.forEach((partyMap, cycle) => {
       let chartData = new ChartData();
       chartData.label = "$";
-      partyMap.forEach( (contributionMap, party) => {
-        contributionMap.forEach((contributions, committeeName)=> {
-          let sum = contributions.reduce( (sum, contribution) => sum + contribution.amount, 0);
+      partyMap.forEach((contributionMap, party) => {
+        contributionMap.forEach((contributions, committeeName) => {
+          let sum = contributions.reduce((sum, contribution) => sum + contribution.amount, 0);
           chartData.barLabels.push(committeeName);
           chartData.data.push(sum);
           chartData.colors.push(this.getColor(party));
@@ -138,6 +145,10 @@ export class SearchResultsComponent implements OnInit {
       return "#d4edda";
     }
     return "#e2e3e5";
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 
 }
