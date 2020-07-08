@@ -39,7 +39,7 @@ export class AppComponent {
       this.retrieveLocalStorage();
       return;
     }
-    this.fromYear = params.get('fromYear') || "2020";
+    this.fromYear = params.get('fromYear') || "1980";
     this.toYear = params.get('toYear') || "2020";
     this.names = params.get('name')? params.getAll('name') : [""];
     this.employers = params.get('employer')? params.getAll('employer') : [""];
