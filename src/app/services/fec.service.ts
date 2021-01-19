@@ -23,7 +23,7 @@ export class FecService {
     cities.map(s => { if (s.length > 0) httpParams = httpParams.append("city", s); });
     if (state && state.length > 0) httpParams = httpParams.append("state", state);;
     committeetypes.map(s => { if  (s.length > 0) httpParams = httpParams.append("committeetype", s); });
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const eventSource = this._sseService.getEventSource("https://fecrestapi.herokuapp.com/stream/?" + httpParams.toString());
 
       eventSource.onmessage = event => {
