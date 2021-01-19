@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Contribution } from 'src/app/models/contribution';
 import { Pagination } from 'src/app/models/pagination';
 import { ChartData } from 'src/app/models/ChartData';
@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-results',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css']
 })
@@ -24,7 +25,7 @@ export class SearchResultsComponent implements OnInit {
 
   routeSubscription;
 
-  constructor(private fecService: FecService, private route: ActivatedRoute) {
+  constructor(private fecService: FecService, private route: ActivatedRoute, private changeDetection: ChangeDetectorRef) {
     this.routeSubscription = this.route.queryParamMap.subscribe(params => {
       this.paramsChange(params);
     });
@@ -35,6 +36,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   paramsChange(params) {
+    this.changeDetection.markForCheck();
     this.data = new Array<Contribution>();
     this.pagination = new Pagination();
     this.cycleMap = new Map();
@@ -52,10 +54,15 @@ export class SearchResultsComponent implements OnInit {
 
     let request = this.fecService.makeRequest(Number(fromYear), Number(toYear), names, employers,
       occupations, this.getCommitteeTypes(committeeTypes), cities, state)
-      .pipe(finalize(() => { this.loading = false; }))
+      .pipe(finalize(() => { 
+        this.setChartData(); 
+        this.changeDetection.markForCheck(); 
+        this.loading = false; 
+      }))
       .subscribe(response => {
-        this.pagination = new Pagination(response['pagination']);
-        <any>response['results'].map(item => {
+        let res = JSON.parse(response['data']);
+        this.pagination = new Pagination(res['pagination']);
+        <any>res['results'].map(item => {
           this.data.push(new Contribution(item));
           let cycle = item.committee.cycle;
           let party = item.committee.party;
@@ -85,10 +92,7 @@ export class SearchResultsComponent implements OnInit {
             partyMap.set(party, committeeMap);
             this.cycleMap.set(cycle, partyMap);
           }
-
         });
-        this.setChartData();
-        this.loading = false;
       });
   }
 
