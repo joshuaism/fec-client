@@ -49,11 +49,12 @@ export class SearchResultsComponent implements OnInit {
     let employers = params.getAll('employer');
     let occupations = params.getAll('occupation');
     let committeeTypes = params.getAll('committeetype');
+    let committees = params.getAll('committee');
     let cities = params.getAll('city');
     let state = params.get('state');
 
     let request = this.fecService.makeRequest(Number(fromYear), Number(toYear), names, employers,
-      occupations, this.getCommitteeTypes(committeeTypes), cities, state)
+      occupations, this.getCommitteeTypes(committeeTypes), cities, state, committees)
       .pipe(finalize(() => { 
         this.setChartData(); 
         this.changeDetection.markForCheck(); 

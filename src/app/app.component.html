@@ -16,7 +16,7 @@
         <label for={{checkbox.key}}>{{checkbox.key}}</label>
       </div>
     </div>
-    <div class="col">
+    <div class="col-5">
       <span><b>Election Cycles</b></span><br/>
       <label for="fromYear">From</label>
       <select [(ngModel)]="fromYear" (change)="onFromElectionYearsChange()">
@@ -26,6 +26,10 @@
       <select [(ngModel)]="toYear">
         <option *ngFor="let year of toElectionYears()" [value]="year">{{year}}</option>
       </select>
+      <br/>
+      <br/>
+      <span><b>Committee IDs</b></span><br/>
+      <app-multi-text label="Committee" max="10" [elements]="committees"></app-multi-text>
     </div>
   </div>
   <div class="row">
@@ -35,7 +39,7 @@
     <div class="col">
       <!--this column left intentionally blank-->
     </div>
-    <div class="col">
+    <div class="col-5">
       <button (click)="submit()">Submit</button>
     </div>
   </div>

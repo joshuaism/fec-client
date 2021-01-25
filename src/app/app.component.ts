@@ -14,6 +14,7 @@ export class AppComponent {
   employers = [""];
   occupations = [""];
   cities = [""];
+  committees = [""];
   state: string = "";
   electionYears = [];
   fromYear: string;
@@ -47,6 +48,7 @@ export class AppComponent {
     params.getAll('committeetype').every(s => {this.committeeTypeMap.set(s, true)});
     this.cities = params.get('city')? params.getAll('city') : [""];
     this.state = params.get('state') || "";
+    this.committees = params.get('committee')? params.getAll('committee') : [""];
   }
 
   // preserve committee type checkbox order
@@ -63,6 +65,7 @@ export class AppComponent {
     this.renewCommitteeTypeMap();
     this.fromYear = "2020";
     this.toYear = "2020";
+    this.committees = [""];
     localStorage.clear();
   }
 
@@ -91,6 +94,7 @@ export class AppComponent {
     this.addParam(params, this.employers, 'employer');
     this.addParam(params, this.occupations, 'occupation');
     this.addParam(params, this.cities, 'city');
+    this.addParam(params, this.committees, 'committee')
     if (this.state && this.state.length > 0) {
       params['state'] = this.state;
     }
@@ -126,6 +130,7 @@ export class AppComponent {
     localStorage.setItem("committeetypes", JSON.stringify(committeetypes));
     localStorage.setItem("fromYear", this.fromYear);
     localStorage.setItem("toYear", this.toYear);
+    localStorage.setItem("committees", JSON.stringify(this.committees));
   }
 
   retrieveLocalStorage() {
@@ -152,6 +157,9 @@ export class AppComponent {
     }
     if (localStorage.getItem("toYear")) {
       this.toYear = localStorage.getItem("toYear");
+    }
+    if (localStorage.getItem("committes")) {
+      this.committees = JSON.parse(localStorage.getItem("committees"));
     }
   }
 
