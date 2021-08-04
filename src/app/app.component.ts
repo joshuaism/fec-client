@@ -24,11 +24,11 @@ export class AppComponent {
   routeSubscription;
 
   constructor(private router: Router, private route: ActivatedRoute) {
-    for(let i = 1980; i <= 2020; i += 2) {
+    for(let i = 1980; i <= 2022; i += 2) {
       this.electionYears.push(i);
     }
-    this.fromYear = "2020";
-    this.toYear = "2020";
+    this.fromYear = "2022";
+    this.toYear = "2022";
     this.routeSubscription = this.route.queryParamMap.subscribe(params => {
       this.paramsChange(params);
     });
@@ -41,7 +41,7 @@ export class AppComponent {
       return;
     }
     this.fromYear = params.get('fromYear') || "1980";
-    this.toYear = params.get('toYear') || "2020";
+    this.toYear = params.get('toYear') || "2022";
     this.names = params.get('name')? params.getAll('name') : [""];
     this.employers = params.get('employer')? params.getAll('employer') : [""];
     this.occupations = params.get('occupation')? params.getAll('occupation') : [""];
@@ -63,8 +63,8 @@ export class AppComponent {
     this.cities = [""];
     this.state = "";
     this.renewCommitteeTypeMap();
-    this.fromYear = "2020";
-    this.toYear = "2020";
+    this.fromYear = "2022";
+    this.toYear = "2022";
     this.committees = [""];
     localStorage.clear();
   }
@@ -87,7 +87,7 @@ export class AppComponent {
     if (this.fromYear != "1980") {
       params['fromYear'] = this.fromYear;
     }
-    if(this.toYear != "2020") {
+    if(this.toYear != "2022") {
       params['toYear'] = this.toYear;
     }
     this.addParam(params, this.names, 'name');

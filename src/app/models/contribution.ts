@@ -5,6 +5,7 @@ export class Contribution {
     fullName: string;
     occupation: string;
     employer: string;
+    address: string;
     city: string;
     state: string;
     committee: Committee;
@@ -16,6 +17,7 @@ export class Contribution {
         this.fullName = obj && obj.fullName || null;
         this.occupation = obj && obj.occupation || null;
         this.employer = obj && obj.employer || null;
+        this.address = obj && obj.address || null;
         this.city = obj && obj.city || null;
         this.state = obj && obj.state || null;
         this.committee = obj && new Committee(obj.committee) || null;

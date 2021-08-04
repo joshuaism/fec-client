@@ -44,7 +44,7 @@ export class SearchResultsComponent implements OnInit {
     this.loading = true;
 
     let fromYear = params.get('fromYear') || 1980;
-    let toYear = params.get('toYear') || 2020;
+    let toYear = params.get('toYear') || 2022;
     let names = params.getAll('name');
     let employers = params.getAll('employer');
     let occupations = params.getAll('occupation');

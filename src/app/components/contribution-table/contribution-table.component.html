@@ -17,7 +17,11 @@
     <tbody>
       <tr *ngFor="let c of uniqueContributors">
         <td><a target="_blank" href="https://www.fec.gov/data/receipts/individual-contributions/?contributor_name={{c.fullName}}&contributor_occupation={{c.occupation}}&contributor_state={{c.state}}&contributor_city={{c.city}}&per_page=100">{{c.fullName}}</a></td>
-        <td>{{c.city}}, {{c.state}}</td>
+        <td>
+          <span title="{{c.address}}">
+            {{c.city}}, {{c.state}}
+          </span>
+        </td>
         <td>{{c.occupation}}</td>
         <td>{{c.employer}}</td>
         <td>
