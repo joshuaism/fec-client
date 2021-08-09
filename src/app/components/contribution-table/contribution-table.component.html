@@ -16,7 +16,15 @@
     </thead>
     <tbody>
       <tr *ngFor="let c of uniqueContributors">
-        <td><a target="_blank" href="https://www.fec.gov/data/receipts/individual-contributions/?contributor_name={{c.fullName}}&contributor_occupation={{c.occupation}}&contributor_state={{c.state}}&contributor_city={{c.city}}&per_page=100">{{c.fullName}}</a></td>
+        <td>
+          {{c.fullName}}&nbsp;
+          <a target="_blank" title="FEC Contributor Search" href="https://www.fec.gov/data/receipts/individual-contributions/?contributor_name={{c.fullName}}&contributor_occupation={{c.occupation}}&contributor_state={{c.state}}&contributor_city={{c.city}}&per_page=100">
+            <img class="icon" src="./assets/icons/fec.png">
+          </a>&nbsp;&nbsp;
+          <a target="_blank" title="LinkedIn Search" href="https://www.linkedin.com/search/results/people/?keywords={{c.fullName}}+{{c.employer}}">
+            <img class="icon" src="./assets/icons/linkedin.ico">
+          </a>
+        </td>
         <td>
           <span title="{{c.address}}">
             {{c.city}}, {{c.state}}
