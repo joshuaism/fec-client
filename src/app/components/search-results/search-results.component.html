@@ -1,3 +1,4 @@
+<app-search></app-search>
 <p *ngIf="loading">loading...</p>
 <p *ngIf="!loading && data && data.length <= 0">No results</p>
 <div class="alert alert-danger" role="alert" *ngIf="!loading && pagination && pagination.count > data.length">Limit Exceeded!

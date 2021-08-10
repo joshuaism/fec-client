@@ -1,48 +1,7 @@
-<div class="container">
-  <div class="row">
-    <div class="col-5">
-      <span><b>Contributor Information</b></span>
-      <app-multi-text label="Name" max="10" [elements]="names"></app-multi-text>
-      <app-multi-text label="Employer" max="10" [elements]="employers"></app-multi-text>
-      <app-multi-text label="Occupation" max="10" [elements]="occupations"></app-multi-text>
-      <app-multi-text label="City" max="10" [elements]="cities"></app-multi-text>
-      <app-us-states [state]="state" (selection)="setState($event)"></app-us-states>
-    </div>
-    <div class="col">
-      <span><b>Committee Type</b></span><br/>
-      <div *ngFor="let checkbox of committeeTypeMap | keyvalue: originalOrder">
-        <input type="checkbox" id="{{checkbox.key}}" [ngModel]="committeeTypeMap.get(checkbox.key)"
-          (ngModelChange)="committeeTypeMap.set(checkbox.key, $event)">
-        <label for={{checkbox.key}}>{{checkbox.key}}</label>
-      </div>
-    </div>
-    <div class="col-5">
-      <span><b>Election Cycles</b></span><br/>
-      <label for="fromYear">From</label>
-      <select [(ngModel)]="fromYear" (change)="onFromElectionYearsChange()">
-        <option *ngFor="let year of electionYears" [value]="year">{{year}}</option>
-      </select>
-      <label for="toYear">To</label>
-      <select [(ngModel)]="toYear">
-        <option *ngFor="let year of toElectionYears()" [value]="year">{{year}}</option>
-      </select>
-      <br/>
-      <br/>
-      <span><b>Committee IDs</b></span><br/>
-      <app-multi-text label="Committee" max="10" [elements]="committees"></app-multi-text>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-5">
-      <button (click)="clearForm()">Clear Form</button>
-    </div>
-    <div class="col">
-      <!--this column left intentionally blank-->
-    </div>
-    <div class="col-5">
-      <button (click)="submit()">Submit</button>
-    </div>
-  </div>
+<div style="text-align: center;">
+  <a [routerLink]="['/contributions/search']">Contribution Search</a> |
+  <a [routerLink]="['/outside-spending/candidate']">Outside Spending Search</a> |
+  <a [routerLink]="['/about']">About</a>
 </div>
 
 <router-outlet></router-outlet>

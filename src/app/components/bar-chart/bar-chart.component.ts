@@ -24,7 +24,7 @@ export class BarChartComponent implements OnInit {
         if (label instanceof Array) {
           label = label.join('').trim();
         }
-       this.router.navigate(['/results'], { queryParamsHandling: "preserve", fragment: this.cycle + label });
+       this.router.navigate(['contributions/search/results'], { queryParamsHandling: "preserve", fragment: this.cycle + label });
       }
     },
     tooltips: {callbacks: { label: function(item) {return formatCurrency(item.value, 'en', '$', 'USD')}}},

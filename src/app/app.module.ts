@@ -11,6 +11,9 @@ import { UsStatesComponent } from './components/us-states/us-states.component';
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { ErrorIntercept } from './services/error.interceptor';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { OutsideSpendingComponent } from './components/outside-spending/outside-spending/outside-spending.component';
+import { SearchComponent } from './components/contributions/search/search.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { SearchResultsComponent } from './components/search-results/search-resul
     MultiTextComponent,
     UsStatesComponent,
     BarChartComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    OutsideSpendingComponent,
+    SearchComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
