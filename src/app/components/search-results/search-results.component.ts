@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Contribution } from 'src/app/models/contribution';
 import { Pagination } from 'src/app/models/pagination';
-import { ChartData } from 'src/app/models/ChartData';
+import { ChartData } from 'src/app/models/chart-data';
 import { finalize } from 'rxjs/operators';
 import { FecService } from 'src/app/services/fec.service';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search-results',
@@ -25,7 +26,7 @@ export class SearchResultsComponent implements OnInit {
 
   routeSubscription;
 
-  constructor(private fecService: FecService, private route: ActivatedRoute, private changeDetection: ChangeDetectorRef) {
+  constructor(private titleService: Title, private fecService: FecService, private route: ActivatedRoute, private changeDetection: ChangeDetectorRef) {
     this.routeSubscription = this.route.queryParamMap.subscribe(params => {
       this.paramsChange(params);
     });
@@ -59,6 +60,13 @@ export class SearchResultsComponent implements OnInit {
         this.setChartData(); 
         this.changeDetection.markForCheck(); 
         this.loading = false; 
+        this.titleService.setTitle(names + " " +
+          employers + " " +
+          occupations + " " +
+          cities + " " + 
+          committees + " " + 
+          fromYear + "-" + toYear + 
+          " - Contribution Search");
       }))
       .subscribe(response => {
         let res = JSON.parse(response['data']);

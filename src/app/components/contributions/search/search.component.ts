@@ -1,5 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
@@ -8,8 +9,6 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-
-  title = 'fec';
 
   names = [""];
   employers = [""];
@@ -24,7 +23,7 @@ export class SearchComponent implements OnInit {
 
   routeSubscription;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private titleService: Title, private router: Router, private route: ActivatedRoute) {
     for(let i = 1980; i <= 2022; i += 2) {
       this.electionYears.push(i);
     }
@@ -36,6 +35,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle("Contribution Search")
     for(let i = 1980; i <= 2022; i += 2) {
       this.electionYears.push(i);
     }

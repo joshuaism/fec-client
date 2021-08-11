@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ChartData } from '../../models/ChartData';
+import { ChartData } from '../../models/chart-data';
 import { formatCurrency } from '@angular/common';
 import { Router } from '@angular/router';
 
