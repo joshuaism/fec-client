@@ -1,1 +1,7 @@
-<p>outside-spending works!</p>
+<h1>Outside Spending Search</h1>
+
+Candidate: <app-candidate-dropdown (notify)="setCandidate($event)"></app-candidate-dropdown>
+
+<div *ngFor="let e of outsideSpending">
+    <p>{{e.supportOrOppose}} {{e.candidate}} {{e.candidateParty}} {{e.description}} {{e.committee.name}} {{e.amount}}</p>
+</div>

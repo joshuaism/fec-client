@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpParams } from '@angular/common/http'
 import { SseService } from './SseService';
 import { Observable } from 'rxjs';
 
@@ -42,5 +42,24 @@ export class FecService {
     })
   }
 
+  makeOutsideSpendingRequest(id: string) {
+    if (id && id.length > 0)
+      return new Observable(observer => {
+        const eventSource = this._sseService.getEventSource("https://fecrestapi.herokuapp.com/scheduleE/candidate/" + id);
+
+        eventSource.onmessage = event => {
+          this._zone.run(() => {
+            observer.next(event);
+          });
+        };
+
+        eventSource.onerror = error => {
+          this._zone.run(() => {
+            observer.error(error);
+            eventSource.close();
+          });
+        };
+      })
+  }
 
 }

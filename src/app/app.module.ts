@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,9 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 import { OutsideSpendingComponent } from './components/outside-spending/outside-spending/outside-spending.component';
 import { SearchComponent } from './components/contributions/search/search.component';
 import { AboutComponent } from './components/about/about.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CandidateDropdownComponent } from './components/outside-spending/candidate-dropdown/candidate-dropdown.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -25,14 +28,18 @@ import { AboutComponent } from './components/about/about.component';
     SearchResultsComponent,
     OutsideSpendingComponent,
     SearchComponent,
-    AboutComponent
+    AboutComponent,
+    CandidateDropdownComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    ChartsModule
+    ChartsModule,
+    NoopAnimationsModule,
+    MatAutocompleteModule
   ],
   providers: [
     {

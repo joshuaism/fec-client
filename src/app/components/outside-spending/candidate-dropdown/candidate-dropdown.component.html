@@ -1,0 +1,10 @@
+
+<form class="example-form">
+    <input id="candidateinput" type="text" placeholder="targeted Candidate" aria-label="Number" matInput [formControl]="myControl"
+        [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+        </mat-option>
+    </mat-autocomplete>
+</form>
