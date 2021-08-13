@@ -1,0 +1,21 @@
+<p>Total Amount: {{getSum() | currency: 'USD'}}</p>
+<p>Total Expenditures: {{expenditures.length}}</p>
+<p>Total Unique Expenditures: {{uniqueExpenditures.length}}</p>
+<table class="table table-striped" style="width: 75%">
+  <thead>
+    <tr>
+      <th style="width: 42%;" (click)="sort('description')">DESCRIPTION</th>
+      <th style="width: 42%;" (click)="sort('payee')">PAYEE</th>
+      <th style="width: 8%; text-align: right;" (click)="sort('date')">DATE</th>
+      <th style="width: 8%; text-align: right;" (click)="sort('amount')">AMOUNT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of uniqueExpenditures">
+      <td>{{e.description}}</td>
+      <td>{{e.payee}}</td>
+      <td style="text-align: right;">{{e.date | date:'mediumDate'}}</td>
+      <td style="text-align: right;">{{e.amount | currency: 'USD'}}</td>
+    </tr>
+  </tbody>
+</table>

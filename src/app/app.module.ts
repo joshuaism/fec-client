@@ -18,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CandidateDropdownComponent } from './components/outside-spending/candidate-dropdown/candidate-dropdown.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { OutsideSpendingResultsComponent } from './components/outside-spending/outside-spending-results/outside-spending-results.component';
+import { ExpenditureTableComponent } from './components/outside-spending/expenditure-table/expenditure-table.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { OutsideSpendingResultsComponent } from './components/outside-spending/o
     SearchComponent,
     AboutComponent,
     CandidateDropdownComponent,
-    OutsideSpendingResultsComponent
+    OutsideSpendingResultsComponent,
+    ExpenditureTableComponent
   ],
   imports: [
     BrowserModule,

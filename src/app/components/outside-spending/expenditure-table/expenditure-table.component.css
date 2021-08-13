@@ -1,0 +1,13 @@
+table {
+    margin: auto;
+    min-width: 90%;
+	border-radius: .75rem;
+	background-color: white;
+}
+
+.icon {
+	min-height: 20px;
+	min-width: 20px;
+	max-width: 20px;
+	max-height: 20px;
+}

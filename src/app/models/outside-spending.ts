@@ -15,7 +15,11 @@ export class OutsideSpending {
         this.candidate = obj && obj.candidate || null;
         this.candidateParty = obj && obj.candidateParty || null;
         this.payee = obj && obj.payee || null;
-        this.supportOrOppose = obj && obj.supportOrOppose || null;
+        if (obj && obj.supportOrOppose) {
+            this.supportOrOppose = obj.supportOrOppose == "S" ? "Support" : "Oppose";
+        } else {
+            this.supportOrOppose = null;
+        }
         this.description = obj && obj.description || null;
         this.committee = obj && new Committee(obj.committee) || null;
         this.amount = obj && obj.amount || 0;
