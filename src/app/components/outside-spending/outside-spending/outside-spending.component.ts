@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Candidate } from 'src/app/models/candidate';
-import { OutsideSpending } from 'src/app/models/outside-spending';
-import { FecService } from 'src/app/services/fec.service';
 
 @Component({
   selector: 'app-outside-spending',
@@ -12,27 +10,22 @@ import { FecService } from 'src/app/services/fec.service';
 })
 export class OutsideSpendingComponent implements OnInit {
 
-  outsideSpending: OutsideSpending[];
+  id: string;
 
-  constructor(private titleService: Title, private fecService: FecService) { }
+  constructor(private titleService: Title, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.titleService.setTitle("Outside Spending Search");
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.id = params.get('id');
+    });
   }
 
   setCandidate(value: Candidate) {
-    this.outsideSpending = [];
     if (value) {
-      this.fecService.makeOutsideSpendingRequest(value.id).pipe(finalize(() => { 
-        //TODO populate the page
-      }))
-      .subscribe(response => {
-        let res = JSON.parse(response['data']);
-        let results = res['results'];
-        results.forEach(e => {
-          this.outsideSpending.push(new OutsideSpending(e));
-        });
-      });
+      this.id = value.id;
+      this.router.navigate(['/outside-spending/candidate/', value.id], {state: value});
+      
     }
   }
 

@@ -44,7 +44,7 @@ export class CandidateDropdownComponent implements OnInit {
       this.service.getCandidates(value).subscribe(res => 
         res['results'].map(val => {
           var c = new Candidate(val);
-          var key = c.name + " (" + c.party.substring(0, 1) + ") | " + c.state + "-" + c.office;
+          var key = c.toString();
           this.candidateMap.set(key, c);
         }));
     }

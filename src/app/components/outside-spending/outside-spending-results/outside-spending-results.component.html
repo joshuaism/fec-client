@@ -1,0 +1,17 @@
+<p *ngIf="loading">loading...</p>
+<p *ngIf="!loading && outsideSpending && outsideSpending.length <= 0">No results</p>
+<div class="alert alert-danger" role="alert" *ngIf="!loading && pagination && pagination.count > outsideSpending.length">Limit Exceeded!
+    Search returned {{pagination.count}} expenditures. Processed only first {{outsideSpending.length}} results.</div>
+  <div class="alert alert-info" role="alert" *ngIf="!loading && pagination">Processed
+    {{outsideSpending.length}} expenditures.</div>
+<table>
+    <tr *ngFor="let e of outsideSpending">
+        <td>{{e.supportOrOppose}}</td>
+        <td>{{e.description}}</td>
+        <td>{{e.payee}}</td>
+        <td>{{e.committee.name}}</td>
+        <td>{{e.committee.party}}</td>
+        <td>{{e.date | date:'mediumDate'}}</td>
+        <td>{{e.amount | currency: 'USD'}}</td>
+    </tr>
+</table>

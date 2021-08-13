@@ -15,4 +15,8 @@ export class Candidate {
         this.state = obj && obj.state || '';
         this.office = obj && obj.office || '';
     }
+
+    toString(): String {
+        return this.name + " (" + this.party.substring(0, 1) + ") | " + this.state + "-" + this.office;
+    }
 }

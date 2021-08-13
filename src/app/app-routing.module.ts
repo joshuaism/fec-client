@@ -15,6 +15,7 @@ const routes: Routes = [
   {path: 'contributions/search', component: SearchComponent},
   {path: 'contributions/search/results', component: SearchResultsComponent},
   {path: 'outside-spending/candidate', component: OutsideSpendingComponent},
+  {path: 'outside-spending/candidate/:id', component: OutsideSpendingComponent},
   {path: 'about', component: AboutComponent}
 ];
 

@@ -2,6 +2,4 @@
 
 Candidate: <app-candidate-dropdown (notify)="setCandidate($event)"></app-candidate-dropdown>
 
-<div *ngFor="let e of outsideSpending">
-    <p>{{e.supportOrOppose}} {{e.candidate}} {{e.candidateParty}} {{e.description}} {{e.committee.name}} {{e.amount}}</p>
-</div>
+<app-outside-spending-results *ngIf="id"></app-outside-spending-results>
