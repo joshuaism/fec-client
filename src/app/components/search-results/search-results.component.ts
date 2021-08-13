@@ -16,6 +16,7 @@ import { Title } from '@angular/platform-browser';
 export class SearchResultsComponent implements OnInit {
 
   top = "top";
+  fullUrl: string;
   loading = false;
   data: Contribution[];
   cycleMap: Map<string, Map<string, Map<string, Contribution[]>>>;
@@ -27,6 +28,9 @@ export class SearchResultsComponent implements OnInit {
   routeSubscription;
 
   constructor(private titleService: Title, private fecService: FecService, private route: ActivatedRoute, private changeDetection: ChangeDetectorRef) {
+    this.route.url.subscribe(url => {
+      this.fullUrl = url.reduce((fullUrl, path) => fullUrl + path + "/", "");
+    })
     this.routeSubscription = this.route.queryParamMap.subscribe(params => {
       this.paramsChange(params);
     });

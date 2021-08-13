@@ -15,6 +15,7 @@ import { FecService } from 'src/app/services/fec.service';
 export class OutsideSpendingResultsComponent implements OnInit {
 
   top = "top";
+  fullUrl: string;
   id: string;
   loading: boolean = true;
   pagination: Pagination;
@@ -27,6 +28,9 @@ export class OutsideSpendingResultsComponent implements OnInit {
   constructor(private titleService: Title, private route: ActivatedRoute, private fecService: FecService) { }
 
   ngOnInit(): void {
+    this.route.url.subscribe(url => {
+      this.fullUrl = url.reduce((fullUrl, path) => fullUrl + path + "/", "");
+    })
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.loading = true;
       this.id = params.get('id');

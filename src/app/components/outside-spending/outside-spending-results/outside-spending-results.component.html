@@ -17,7 +17,7 @@
   <a [attr.id]="cycleMapEntity.key" name="{{cycleMapEntity.key}}"></a>
   <div class="anchor"><a queryParamsHandling="preserve" [routerLink]='' [fragment]="top">[Top]</a></div>
   <h3>{{cycleMapEntity.key}} Election Cycle</h3>
-  <app-bar-chart cycle="{{cycleMapEntity.key}}" label="Total Expenditures in Dollars" [chartData]="chartMap.get(cycleMapEntity.key)"></app-bar-chart>
+  <app-bar-chart [url]="fullUrl" cycle="{{cycleMapEntity.key}}" label="Total Expenditures in Dollars" [chartData]="chartMap.get(cycleMapEntity.key)"></app-bar-chart>
   <div class="party" [style.background-color]="getColor(supportMapEntity.key)" *ngFor="let supportMapEntity of cycleMapEntity.value | keyvalue">
       <h3>{{supportMapEntity.key}}</h3>
       <div *ngFor="let committeeMapEntity of supportMapEntity.value | keyvalue">

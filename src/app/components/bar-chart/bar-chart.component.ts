@@ -12,6 +12,7 @@ export class BarChartComponent implements OnInit {
 
   constructor(private router: Router) { }
 
+  @Input() url: string;
   @Input() cycle: string;
   @Input() label: string;
   @Input() chartData: ChartData;
@@ -24,7 +25,7 @@ export class BarChartComponent implements OnInit {
         if (label instanceof Array) {
           label = label.join('').trim();
         }
-        this.router.navigate([window.location.pathname], { queryParamsHandling: "preserve", fragment: this.cycle + label });
+        this.router.navigate([this.url], { queryParamsHandling: "preserve", fragment: this.cycle + label });
       }
     },
     tooltips: {callbacks: { label: function(item) {return formatCurrency(item.value, 'en', '$', 'USD')}}},
