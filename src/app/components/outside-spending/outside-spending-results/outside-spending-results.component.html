@@ -1,12 +1,17 @@
 <p *ngIf="loading">loading...</p>
-<p *ngIf="!loading && outsideSpending && outsideSpending.length > 0">
-  Candidate: {{outsideSpending[0].candidate}} ({{outsideSpending[0].candidateParty}})</p>
+<p *ngIf="!loading && candidate">
+  Results for {{candidate.toString()}}
+</p>
+<p *ngIf="!loading && !candidate">
+  No candidate found for id {{id}}.
+</p>
 <p *ngIf="!loading && outsideSpending && outsideSpending.length <= 0">No results</p>
 <div class="alert alert-danger" role="alert" *ngIf="!loading && pagination && pagination.count > outsideSpending.length">Limit Exceeded!
   Search returned {{pagination.count}} expenditures. Processed only first {{outsideSpending.length}} results.
 </div>
 <div class="alert alert-info" role="alert" *ngIf="!loading && pagination">Processed
-  {{outsideSpending.length}} expenditures.
+  {{outsideSpending.length}} expenditures. <br />
+  Smallest Processed Expenditure: {{pagination.lastAmount | currency: 'USD'}}.
 </div>
 <a [attr.id]="top" name="top"></a>
 <div *ngIf="!loading">

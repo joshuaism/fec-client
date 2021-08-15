@@ -4,7 +4,8 @@
 <div class="alert alert-danger" role="alert" *ngIf="!loading && pagination && pagination.count > data.length">Limit Exceeded!
   Search returned {{pagination.count}} contributions. Processed only first {{data.length}} results.</div>
 <div class="alert alert-info" role="alert" *ngIf="!loading && pagination">Processed
-  {{data.length}} contributions.</div>
+  {{data.length}} contributions. <br />
+  Smallest Processed Contribution: {{pagination.lastAmount | currency: 'USD'}}.</div>
 <a [attr.id]="top" name="top"></a>
 <div style="text-align: center;">
   <a *ngFor="let cycleMapEntity of cycleMap | keyvalue" queryParamsHandling="preserve" [routerLink]='' [fragment]="cycleMapEntity.key">[{{cycleMapEntity.key}}]</a>

@@ -15,4 +15,8 @@ export class CandidateService {
     if (name[0] && name[0].length > 0) httpParams = httpParams.append("name", name[0]);
     return this.http.get("https://fecrestapi.herokuapp.com/candidates/?" + httpParams.toString());
   }
+
+  getCandidateById(id: string):  Observable<Object> {
+    return this.http.get("https://fecrestapi.herokuapp.com/candidate/" + id);
+  }
 }
