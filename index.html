@@ -27,5 +27,14 @@
 <link rel="stylesheet" href="styles.d6596b6a44c88af0ba8e.css"></head>
 <body>
   <app-root></app-root>
+  <script>
+    (function(){
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
 <script src="runtime-es2015.1eba213af0b233498d9d.js" type="module"></script><script src="runtime-es5.1eba213af0b233498d9d.js" nomodule defer></script><script src="polyfills-es5.9e286f6d9247438cbb02.js" nomodule defer></script><script src="polyfills-es2015.690002c25ea8557bb4b0.js" type="module"></script><script src="main-es2015.f4c44e771e15f4dda85f.js" type="module"></script><script src="main-es5.f4c44e771e15f4dda85f.js" nomodule defer></script></body>
 </html>
